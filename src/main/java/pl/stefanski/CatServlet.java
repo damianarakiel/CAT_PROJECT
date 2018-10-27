@@ -28,23 +28,41 @@ public class CatServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<Cat> cats;
+        List<Cat> cats = null;
         String raceFilter = req.getParameter("search");
         String nameFilter = req.getParameter("search");
         String ownerFilter = req.getParameter("search");
+        String operator = req.getParameter("operator");
+
 
         if (raceFilter != null && !raceFilter.isEmpty()) {
-            cats = catRepository.findByRace(raceFilter);
-        } else if (nameFilter != null && !nameFilter.isEmpty()){
-            cats = catRepository.findByName(nameFilter);
-        } else if (ownerFilter != null && !ownerFilter.isEmpty()){
-            cats = catRepository.findByOwner(ownerFilter);
+            switch (operator) {
+                case "race":
+                    cats = catRepository.findByRace(raceFilter);
+                    break;
+                case "name":
+                    cats = catRepository.findByName(nameFilter);
+                    break;
+                case "owner":
+                    cats = catRepository.findByOwner(ownerFilter);
+                    break;
+            }
         } else {
             cats = catRepository.findAll();
         }
-        req.setAttribute(CatModelAtributs.ALL_CATS,cats);
-        req.getRequestDispatcher("/form.jsp").
 
-    forward(req, resp);
-}
-}
+//        if (raceFilter != null && !raceFilter.isEmpty()) {
+//            cats = catRepository.findByRace(raceFilter);
+//        } else if (nameFilter != null && !nameFilter.isEmpty()){
+//            cats = catRepository.findByName(nameFilter);
+//        } else if (ownerFilter != null && !ownerFilter.isEmpty()){
+//            cats = catRepository.findByOwner(ownerFilter);
+//        } else {
+//            cats = catRepository.findAll();
+//        }
+            req.setAttribute(CatModelAtributs.ALL_CATS, cats);
+            req.getRequestDispatcher("/form.jsp").
+
+                    forward(req, resp);
+        }
+    }
