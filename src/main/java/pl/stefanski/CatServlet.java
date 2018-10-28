@@ -29,37 +29,26 @@ public class CatServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         List<Cat> cats = null;
-        String raceFilter = req.getParameter("search");
-        String nameFilter = req.getParameter("search");
-        String ownerFilter = req.getParameter("search");
+        String searchFilter = req.getParameter("search");
         String operator = req.getParameter("operator");
 
 
-        if (raceFilter != null && !raceFilter.isEmpty()) {
+        if (searchFilter != null && !searchFilter.isEmpty()) {
             switch (operator) {
                 case "race":
-                    cats = catRepository.findByRace(raceFilter);
+                    cats = catRepository.findByRace(searchFilter);
                     break;
                 case "name":
-                    cats = catRepository.findByName(nameFilter);
+                    cats = catRepository.findByName(searchFilter);
                     break;
                 case "owner":
-                    cats = catRepository.findByOwner(ownerFilter);
+                    cats = catRepository.findByOwner(searchFilter);
                     break;
             }
         } else {
             cats = catRepository.findAll();
         }
 
-//        if (raceFilter != null && !raceFilter.isEmpty()) {
-//            cats = catRepository.findByRace(raceFilter);
-//        } else if (nameFilter != null && !nameFilter.isEmpty()){
-//            cats = catRepository.findByName(nameFilter);
-//        } else if (ownerFilter != null && !ownerFilter.isEmpty()){
-//            cats = catRepository.findByOwner(ownerFilter);
-//        } else {
-//            cats = catRepository.findAll();
-//        }
             req.setAttribute(CatModelAtributs.ALL_CATS, cats);
             req.getRequestDispatcher("/form.jsp").
 

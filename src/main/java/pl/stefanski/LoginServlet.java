@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet("/login")
+@WebServlet("/signIn")
 public class LoginServlet extends HttpServlet {
 
     Accounts accounts = new Accounts();
@@ -20,9 +20,9 @@ public class LoginServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        boolean credentialsOk = users.entrySet().stream().anyMatch(e -> e.getKey().equals(login) && e.getValue().equals(password));
+        boolean ok = users.entrySet().stream().anyMatch(e -> e.getKey().equals(login) && e.getValue().equals(password));
 
-        req.getSession().setAttribute("logged", credentialsOk);
+        req.getSession().setAttribute("logged", ok);
         resp.sendRedirect("/cats");
 
     }
